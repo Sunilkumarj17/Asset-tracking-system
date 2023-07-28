@@ -1,0 +1,63 @@
+FileOutputStream excelFOS = null;
+        BufferedOutputStream excelBOS = null;
+        XSSFWorkbook wb = null;
+
+
+        JFileChooser excelFileChooser = new JFileChooser();
+        excelFileChooser.setDialogTitle("Save As");
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("Excel Files","xls","xlsx","ods");
+        excelFileChooser.setFileFilter(fnef);
+        int excelChooser = excelFileChooser.showSaveDialog(null);
+
+        if(excelChooser == JFileChooser.APPROVE_OPTION){
+
+            try {
+                wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("Data Sheet");
+
+                for(int i = 0; i < ATable1.getRowCount(); i++){
+                    XSSFRow excelRow = sheet.createRow(i);
+                    for(int j = 0; j < ATable1.getColumnCount(); j++){
+
+                        
+                        if(ATable1.getValueAt(i, j)=="null")
+                        {
+                            ATable1.setValueAt(" ", i, j);
+                        }
+                        else
+                        {
+                        XSSFCell excelCell = excelRow.createCell(j);
+                        //excelCell.setCellValue(ATable1.getValueAt(i, j).toString());
+                        Object o = ATable1.getValueAt(i, j);
+                        //String s = (o == null ? "" : o.toString());
+                        excelCell.setCellValue(o==null?"":o.toString());
+                        }
+
+                    }
+                }   
+
+                excelFOS = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
+                excelBOS = new BufferedOutputStream(excelFOS);
+                wb.write(excelBOS);
+                JOptionPane.showMessageDialog(null, "Exported to Excel");
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                try {
+                    if(excelBOS != null){
+                         excelBOS.close();
+                    }
+                    if(excelFOS != null){
+                         excelFOS.close();
+                    }
+                    if(wb != null){
+                         wb.close();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } //---- end finally
+        } //---- end if condition

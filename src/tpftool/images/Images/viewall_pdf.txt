@@ -1,0 +1,88 @@
+DefaultTableModel mod = (DefaultTableModel) ATable.getModel();
+        FileOutputStream fo=null;
+        String path = "";
+        String nm = "";
+        JFileChooser j = new JFileChooser();
+        int y = ATable.getColumnCount();
+        j.setFileSelectionMode(JFileChooser.APPROVE_OPTION);
+        int x = j.showSaveDialog(null);
+        if(x==JFileChooser.APPROVE_OPTION)
+        {
+            Document doc = new Document(PageSize.A3.rotate(), 50,50,50,50);
+        //String nm = JOptionPane.showInputDialog(null, "Enter PDF name");
+        try {
+            //String nm = j.getSelectedFile().toString();
+            //fo = new FileOutputStream(JFileChooser.getSelectedFile() + ".xlsx");
+            PdfWriter.getInstance(doc,new FileOutputStream(j.getSelectedFile()+".pdf"));
+            doc.open();
+            //Rectangle one = new Rectangle(60,60);
+            float cwidth[] = {11f,7f,7f,6f,8f,6f,8f,7f,10f,10f,7f,7f,8f,8f,8f,6f};
+            PdfPTable tb = new PdfPTable(16);
+            tb.setWidths(cwidth);
+            
+            //tb.setPadding(3);
+            tb.setWidthPercentage(100);
+            //tb.setWidthPercentage(cwidth,one);
+            tb.setSpacingBefore(40f);
+            tb.setSpacingAfter(40f);
+//            tb.setHeaderRows(20);
+//            tb.setSplitRows(true);
+            tb.addCell("Asset Tag");
+            tb.addCell("Category");
+            tb.addCell("Brand");
+            tb.addCell("Model");
+            tb.addCell("User Location");
+            tb.addCell("User ID");
+            tb.addCell("Handling User");
+            tb.addCell("Account");
+            tb.addCell("Provide Date");
+            tb.addCell("HandOver Date");
+            tb.addCell("Status");
+            tb.addCell("Availability");
+            tb.addCell("Comment");
+            tb.addCell("Windows");
+            tb.addCell("Office");
+            tb.addCell("Duration");
+            for(int i=0;i<ATable.getRowCount();i++)
+            {
+                String a=(String) ATable.getValueAt(i, 0);
+                String b=(String) ATable.getValueAt(i, 1);
+                String c=(String) ATable.getValueAt(i, 2);
+                String d=(String) ATable.getValueAt(i, 3);
+                String e=(String) ATable.getValueAt(i, 4);
+                String f=(String) ATable.getValueAt(i, 5);
+                String g=(String) ATable.getValueAt(i, 6);
+                String h=(String) ATable.getValueAt(i, 7);
+                String q=(String) ATable.getValueAt(i, 8);
+                String s=(String) ATable.getValueAt(i, 9);
+                String k=(String) ATable.getValueAt(i, 10);
+                String l=(String) ATable.getValueAt(i, 11);
+                String m=(String) ATable.getValueAt(i, 12);
+                String n=(String) ATable.getValueAt(i, 13);
+                String o=(String) ATable.getValueAt(i, 14);
+                String p=(String) ATable.getValueAt(i, 15);
+                
+                tb.addCell(a);
+                tb.addCell(b);
+                tb.addCell(c);
+                tb.addCell(d);
+                tb.addCell(e);
+                tb.addCell(f);
+                tb.addCell(g);
+                tb.addCell(h);
+                tb.addCell(q);
+                tb.addCell(s);
+                tb.addCell(k);
+                tb.addCell(l);
+                tb.addCell(m);
+                tb.addCell(n);
+                tb.addCell(o);
+                tb.addCell(p);
+            }
+            doc.add(tb);
+            JOptionPane.showMessageDialog(null, "Exported to PDF");
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+        doc.close();
+        }

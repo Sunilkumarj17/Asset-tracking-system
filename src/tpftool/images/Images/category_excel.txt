@@ -1,0 +1,52 @@
+FileOutputStream excelFOS = null;
+        BufferedOutputStream excelBOS = null;
+        XSSFWorkbook wb = null;
+
+
+        JFileChooser excelFileChooser = new JFileChooser();
+        excelFileChooser.setDialogTitle("Save As");
+        FileNameExtensionFilter fnef = new FileNameExtensionFilter("Excel Files","xls","xlsx","ods");
+        excelFileChooser.setFileFilter(fnef);
+        int excelChooser = excelFileChooser.showSaveDialog(null);
+
+        if(excelChooser == JFileChooser.APPROVE_OPTION){
+
+            try {
+                wb = new XSSFWorkbook();
+                XSSFSheet sheet = wb.createSheet("Data Sheet");
+
+                for(int i = 0; i < ATable.getRowCount(); i++){
+                    XSSFRow excelRow = sheet.createRow(i);
+                    for(int j = 0; j < ATable.getColumnCount(); j++){
+
+                        XSSFCell excelCell = excelRow.createCell(j);
+                        excelCell.setCellValue(ATable.getValueAt(i, j).toString());
+
+                    }
+                }   
+
+                excelFOS = new FileOutputStream(excelFileChooser.getSelectedFile() + ".xlsx");
+                excelBOS = new BufferedOutputStream(excelFOS);
+                wb.write(excelBOS);
+                JOptionPane.showMessageDialog(null, "Exported to Excel");
+
+            } catch (FileNotFoundException ex) {
+                ex.printStackTrace();
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            } finally {
+                try {
+                    if(excelBOS != null){
+                         excelBOS.close();
+                    }
+                    if(excelFOS != null){
+                         excelFOS.close();
+                    }
+                    if(wb != null){
+                         wb.close();
+                    }
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            } //---- end finally
+        } //---- end if condition
